@@ -27,8 +27,13 @@ class MicropostsController < ApplicationController
   end
 
   def correct_user
-    @micropost = current_user.microposts.find_by(id: params[:id])
-    unless @micropost
+    # params[:id]に指定のマイクロポストのidが入っている
+    # current_userがログインしているユーザーを表してる
+    @micropost = Micropost.find(params[:id])
+    
+    # もしマイクロポストがログインしているユーザーのものではなかったら
+    unless @micropost.user == current_user
+    # root_urlにリダイレクトする
       redirect_to root_url
     end
   end
